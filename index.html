@@ -1,140 +1,533 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>المكتبة الرقمية - ابتدائية جميلة الجديدة</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f3f7f5;color:#19352b}
-header{background:linear-gradient(135deg,#075e45,#10a477);color:white;text-align:center;padding:28px 15px}
+body{
+  margin:0;font-family:Arial,sans-serif;
+  background:#f3f7f5;color:#19352b
+}
+header{
+  background:linear-gradient(135deg,#075e45,#10a477);
+  color:white;text-align:center;padding:28px 15px
+}
 header h1{font-size:25px}
 header p{line-height:1.8}
 main{max-width:950px;margin:auto;padding:16px}
-.panel,.subject,.lesson{background:white;border-radius:14px;padding:17px;margin:12px 0;box-shadow:0 3px 12px #18352b10}
+.panel,.lesson{
+  background:white;border-radius:14px;padding:17px;
+  margin:12px 0;box-shadow:0 3px 12px #18352b10
+}
 h2{color:#087b58}
-select,input{width:100%;padding:13px;border:1px solid #ccd9d2;border-radius:9px;font-size:16px;margin:7px 0;background:white}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
-.subject{margin:0;text-align:center;cursor:pointer;border:2px solid transparent;font-weight:bold;color:#087b58}
-.subject:hover,.subject:focus{border-color:#087b58}
-button{background:#087b58;color:white;border:0;border-radius:9px;padding:12px 16px;font-size:16px;cursor:pointer;margin:5px 0}
-.lesson h3{margin-top:0}
+select,input{
+  width:100%;padding:13px;border:1px solid #ccd9d2;
+  border-radius:9px;font-size:16px;margin:7px 0;
+  background:white
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:10px
+}
+.subject{
+  background:white;border:2px solid #d7e8df;
+  border-radius:14px;padding:17px;margin:0;
+  text-align:center;cursor:pointer;font-weight:bold;
+  color:#087b58;font-size:16px
+}
+.subject:hover,.subject.active{border-color:#087b58;background:#e7f5ee}
+button{
+  background:#087b58;color:white;border:0;border-radius:9px;
+  padding:12px 16px;font-size:16px;cursor:pointer;margin:5px 0
+}
+.lesson h3{margin-top:0;color:#087b58}
+.lesson h4{color:#075e45}
 .small{color:#64766d;font-size:14px;line-height:1.7}
 .hidden{display:none}
 footer{text-align:center;padding:22px;color:#64766d}
+.answer{
+  background:#e7f5ee;padding:12px;border-radius:8px;
+  margin-top:8px
+}
+.badge{
+  display:inline-block;background:#e7f5ee;color:#075e45;
+  padding:5px 9px;border-radius:20px;font-size:13px
+}
 </style>
 </head>
+
 <body>
+
 <header>
-<h1>🏫 ابتدائية جميلة الجديدة</h1>
-<p>📚 المكتبة الرقمية المدرسية<br>نتعلّم اليوم لننجح غدوة</p>
+  <h1>🏫 ابتدائية جميلة الجديدة</h1>
+  <p>📚 المكتبة الرقمية المدرسية</p>
 </header>
+
 <main>
+
 <section class="panel">
-<h2>📖 مكتبة التلميذ</h2>
-<label for="year">اختار السنة الدراسية:</label>
-<select id="year" onchange="render()">
-<option value="6">السنة السادسة ابتدائي</option>
-<option value="5">السنة الخامسة ابتدائي</option>
-<option value="4">السنة الرابعة ابتدائي</option>
-<option value="3">السنة الثالثة ابتدائي</option>
-<option value="2">السنة الثانية ابتدائي</option>
-<option value="1">السنة الأولى ابتدائي</option>
-</select>
-<input id="search" placeholder="🔎 فتّش على مادة أو درس..." oninput="render()">
-<p class="small">اختار مادة باش تشوف الدروس والتمارين المتوفّرة.</p>
+  <h2>📖 مكتبة التلميذ</h2>
+
+  <label for="year">اختار السنة الدراسية:</label>
+  <select id="year" onchange="render()">
+    <option value="1">السنة الأولى ابتدائي</option>
+    <option value="2">السنة الثانية ابتدائي</option>
+    <option value="3">السنة الثالثة ابتدائي</option>
+    <option value="4">السنة الرابعة ابتدائي</option>
+    <option value="5">السنة الخامسة ابتدائي</option>
+    <option value="6" selected>السنة السادسة ابتدائي</option>
+  </select>
+
+  <input id="search"
+         placeholder="🔎 فتّش على مادة أو درس..."
+         oninput="render()">
+
+  <p class="small">
+    اختار السنة، ثمّ المادة، وبعدها الدرس اللي تحبّ تراجعه.
+  </p>
 </section>
 
 <section class="panel">
-<h2>📚 المواد الدراسية</h2>
-<div id="subjects" class="grid"></div>
+  <h2>📚 المواد الدراسية</h2>
+  <div id="subjects" class="grid"></div>
 </section>
 
 <section class="panel">
-<h2 id="heading">📝 الدروس والتمارين</h2>
-<div id="lessons"></div>
+  <h2 id="heading">📝 الدروس والتمارين</h2>
+  <div id="lessons"></div>
 </section>
 
 <section class="panel">
-<h2>🎯 اختبار سريع في الرياضيات</h2>
-<p>احسب: 25 × 4 = ؟</p>
-<div class="grid">
-<button onclick="answer(90)">90</button>
-<button onclick="answer(100)">100</button>
-<button onclick="answer(120)">120</button>
-</div>
-<p id="result" aria-live="polite"></p>
+  <h2>🎯 اختبار سريع في الرياضيات</h2>
+  <p>احسب: 25 × 4 = ؟</p>
+  <div class="grid">
+    <button onclick="answer(90)">90</button>
+    <button onclick="answer(100)">100</button>
+    <button onclick="answer(120)">120</button>
+  </div>
+  <p id="result" aria-live="polite"></p>
 </section>
+
 </main>
+
 <footer>
-ابتدائية جميلة الجديدة © 2026<br>
-فضاء للتعلّم والمراجعة والنجاح
+  ابتدائية جميلة الجديدة © 2026<br>
+  المكتبة الرقمية المدرسية
 </footer>
+
 <script>
-const subjects=[
-["العربية","📖"],
-["الفرنسية","🇫🇷"],
-["الرياضيات","➗"],
-["الإيقاظ العلمي","🔬"],
-["التربية الإسلامية","🌙"],
-["التربية المدنية","🤝"],
-["التاريخ","🏛️"],
-["الجغرافيا","🌍"],
-["الإنجليزية","🔤"]
+
+/* قائمة المواد المعروضة في المكتبة.
+   تُراجع القائمة النهائية حسب كل مستوى وبرنامجه الرسمي. */
+
+const subjects = [
+  ["العربية","📖"],
+  ["الفرنسية","🇫🇷"],
+  ["الرياضيات","➗"],
+  ["الإيقاظ العلمي","🔬"],
+  ["التربية الإسلامية","🌙"],
+  ["التربية المدنية","🤝"],
+  ["التاريخ","🏛️"],
+  ["الجغرافيا","🌍"],
+  ["الإنجليزية","🔤"]
 ];
-const samples={
+
+/*
+  محتوى تعليمي أولي.
+  كل درس يحتوي على شرح ومثال وتمرين وإصلاح.
+  القائمة ليست جردًا كاملًا للبرنامج الرسمي.
+*/
+
+const lessonData = {
+
+/* ================= السنة الأولى ================= */
+"1": {
+"الرياضيات": [
+{
+title:"التعرّف إلى الأعداد",
+explanation:"نتعرّف إلى الأعداد ونستعملها لعدّ الأشياء وترتيبها. نربط العدد بالكمية التي يمثّلها.",
+example:"🍎🍎🍎 تمثّل ثلاث تفاحات، أي العدد 3.",
+exercise:"عدّ الكرات: ⚽ ⚽ ⚽ ⚽. كم كرة عندنا؟",
+correction:"عندنا 4 كرات."
+},
+{
+title:"الجمع",
+explanation:"الجمع هو ضمّ مجموعة إلى مجموعة أخرى لمعرفة العدد الجملي.",
+example:"2 + 1 = 3",
+exercise:"عند سارة قلمان، وأعطاها أخوها قلمًا آخر. كم قلمًا أصبح عندها؟",
+correction:"2 + 1 = 3 أقلام."
+},
+{
+title:"الطرح",
+explanation:"الطرح هو إنقاص عدد من مجموعة لمعرفة ما بقي.",
+example:"5 - 2 = 3",
+exercise:"عند أمين 5 كرات، أعطى صديقه كرتين. كم بقي عنده؟",
+correction:"5 - 2 = 3 كرات."
+}
+],
 "العربية":[
-["فهم النص","اقرأ النص بعناية، حدّد الشخصيات والمكان والزمان، ثم أجب عن الأسئلة."],
-["القواعد","راجع أنواع الجمل، الفعل والفاعل، والاسم والفعل والحرف مع أمثلة من كتابك."]
+{
+title:"الحروف والكلمات",
+explanation:"نتعرّف إلى الحروف العربية وأصواتها، ثمّ نركّب الحروف لتكوين كلمات.",
+example:"ب + ا + ب = باب.",
+exercise:"اذكر كلمة تبدأ بحرف الميم.",
+correction:"مثال: موز، ماء، مدرسة."
+},
+{
+title:"قراءة جملة بسيطة",
+explanation:"نقرأ الكلمات بالترتيب ونفهم المعنى الذي تعبّر عنه الجملة.",
+example:"لَعِبَ سامي بالكرة.",
+exercise:"أكمل: شربت مريم ...",
+correction:"مثال: شربت مريم الماء."
+}
+]
+},
+
+/* ================= السنة الثانية ================= */
+"2": {
+"الرياضيات":[
+{
+title:"الجمع والطرح",
+explanation:"نستعمل الجمع لضمّ الكميات والطرح لمعرفة الفرق أو ما تبقّى. نتحقّق من معقولية النتيجة.",
+example:"24 + 13 = 37",
+exercise:"احسب: 35 + 22، ثمّ 48 - 16.",
+correction:"35 + 22 = 57. و48 - 16 = 32."
+},
+{
+title:"مسائل حسابية",
+explanation:"نقرأ المسألة، ونحدّد المعطيات والمطلوب، ثمّ نختار العملية المناسبة.",
+example:"في المكتبة 12 كتابًا، أضيفت إليها 5 كتب. العدد الجديد هو 12 + 5.",
+exercise:"عند فاطمة 18 خرزة، أعطت أختها 6 خرزات. كم بقي عندها؟",
+correction:"18 - 6 = 12 خرزة."
+}
+],
+"العربية":[
+{
+title:"الجملة المفيدة",
+explanation:"الجملة المفيدة مجموعة كلمات تعبّر عن معنى واضح.",
+example:"عاد التلميذ إلى المدرسة.",
+exercise:"رتّب الكلمات: الحديقة / في / يلعب / الطفل.",
+correction:"يلعب الطفل في الحديقة."
+},
+{
+title:"المفرد والجمع",
+explanation:"المفرد يدلّ على واحد، والجمع يدلّ على أكثر من اثنين في الاستعمال العام.",
+example:"كتاب — كتب.",
+exercise:"حوّل إلى الجمع: قلم.",
+correction:"أقلام."
+}
+]
+},
+
+/* ================= السنة الثالثة ================= */
+"3": {
+"الرياضيات":[
+{
+title:"الضرب",
+explanation:"الضرب طريقة مختصرة لجمع أعداد متساوية عدّة مرّات.",
+example:"3 × 4 = 4 + 4 + 4 = 12.",
+exercise:"في كلّ علبة 5 أقلام. كم قلمًا في 4 علب؟",
+correction:"5 × 4 = 20 قلمًا."
+},
+{
+title:"القسمة",
+explanation:"القسمة تستعمل لتوزيع كمية بالتساوي أو لمعرفة عدد المجموعات المتساوية.",
+example:"12 ÷ 3 = 4.",
+exercise:"نوزّع 20 قطعة حلوى بالتساوي على 5 أطفال. كم قطعة لكل طفل؟",
+correction:"20 ÷ 5 = 4 قطع."
+}
+],
+"العربية":[
+{
+title:"الاسم والفعل",
+explanation:"الاسم يدلّ على إنسان أو حيوان أو شيء أو معنى. والفعل يدلّ على حدث مرتبط بزمن.",
+example:"الطفل: اسم. كتب: فعل.",
+exercise:"حدّد الفعل في الجملة: قرأ التلميذ النص.",
+correction:"الفعل هو: قرأ."
+}
+]
+},
+
+/* ================= السنة الرابعة ================= */
+"4": {
+"الرياضيات":[
+{
+title:"الكسور",
+explanation:"الكسر يعبّر عن جزء من كلّ مقسّم إلى أجزاء متساوية. المقام يبيّن عدد الأجزاء والمعدود في البسط يبيّن الأجزاء المأخوذة.",
+example:"1/2 يعني جزءًا واحدًا من جزأين متساويين.",
+exercise:"قسّمنا فطيرة إلى 4 أجزاء متساوية وأخذنا جزءًا. ما الكسر الذي يمثّل الجزء المأخوذ؟",
+correction:"الكسر هو 1/4."
+},
+{
+title:"المحيط",
+explanation:"محيط شكل مغلق هو مجموع أطوال أضلاعه.",
+example:"محيط مربع طول ضلعه 5 سم يساوي 5 + 5 + 5 + 5.",
+exercise:"احسب محيط مربع طول ضلعه 6 سم.",
+correction:"6 × 4 = 24 سم."
+}
+],
+"العربية":[
+{
+title:"الجملة الفعلية",
+explanation:"تبدأ الجملة الفعلية عادة بفعل، وقد يأتي بعدها الفاعل ثمّ متمّمات أخرى.",
+example:"كتب التلميذ الدرس.",
+exercise:"عيّن الفعل والفاعل: زرع الفلاح الشجرة.",
+correction:"الفعل: زرع. الفاعل: الفلاح."
+}
+]
+},
+
+/* ================= السنة الخامسة ================= */
+"5": {
+"الرياضيات":[
+{
+title:"الأعداد العشرية",
+explanation:"العدد العشري يتكوّن من جزء صحيح وجزء عشري يفصل بينهما الفاصل العشري.",
+example:"12,5 = 12 وحدة و5 أعشار.",
+exercise:"رتّب تصاعديًا: 3,4 — 3,04 — 3,45.",
+correction:"3,04 < 3,4 < 3,45."
+},
+{
+title:"مساحة المستطيل",
+explanation:"نحسب مساحة المستطيل بضرب الطول في العرض عندما تكون القياسات بوحدة متوافقة.",
+example:"مساحة مستطيل طوله 8 سم وعرضه 3 سم هي 8 × 3.",
+exercise:"حديقة مستطيلة طولها 9 م وعرضها 4 م. احسب مساحتها.",
+correction:"9 × 4 = 36 م²."
+}
+],
+"العربية":[
+{
+title:"الفعل الماضي والمضارع والأمر",
+explanation:"يدلّ الماضي على حدث وقع، والمضارع على حدث يقع أو يتجدّد، والأمر على طلب القيام بفعل.",
+example:"كتب — يكتب — اكتب.",
+exercise:"حدّد زمن الفعل في: يقرأ التلميذ الدرس.",
+correction:"الفعل يقرأ فعل مضارع."
+}
+]
+},
+
+/* ================= السنة السادسة ================= */
+"6": {
+"الرياضيات":[
+{
+title:"مقارنة الأعداد العشرية",
+explanation:"نقارن الجزء الصحيح أوّلًا. إذا تساوى، نقارن الأرقام العشرية من اليسار إلى اليمين، ويمكن إضافة أصفار إلى يمين الجزء العشري دون تغيير القيمة.",
+example:"4,7 = 4,70، و4,65 < 4,7.",
+exercise:"قارن باستعمال < أو > أو =: 5,08 ... 5,8.",
+correction:"5,08 < 5,8 لأنّ 5,08 أصغر من 5,80."
+},
+{
+title:"العمليات على الأعداد العشرية",
+explanation:"في الجمع والطرح نرتّب الفواصل العشرية تحت بعضها. وفي الضرب والقسمة نتبع طريقة العملية المناسبة ونتحقّق من النتيجة.",
+example:"12,5 + 3,2 = 15,7.",
+exercise:"احسب: 24,6 + 5,3.",
+correction:"24,6 + 5,3 = 29,9."
+},
+{
+title:"الكسور",
+explanation:"الكسر يعبّر عن قسمة البسط على المقام عندما يكون المقام غير معدوم. ويمكن تمثيل الكسور بأجزاء متساوية من وحدة.",
+example:"1/2 = 2/4.",
+exercise:"أكمل: 1/3 = .../6.",
+correction:"1/3 = 2/6."
+},
+{
+title:"محيط المستطيل ومساحته",
+explanation:"محيط المستطيل هو مجموع أطوال أضلاعه، ومساحته تساوي الطول مضروبًا في العرض.",
+example:"مستطيل طوله 8 سم وعرضه 3 سم: المساحة 24 سم² والمحيط 22 سم.",
+exercise:"قطعة أرض مستطيلة طولها 12 م وعرضها 5 م. احسب المحيط والمساحة.",
+correction:"المحيط = 2 × (12 + 5) = 34 م. المساحة = 12 × 5 = 60 م²."
+},
+{
+title:"حلّ المسائل",
+explanation:"لفهم المسألة، نقرأها بعناية ونحدّد المعطيات والمطلوب ونختار العمليات المناسبة. بعد الحلّ نكتب الجواب بوحدته ونتحقّق من معقوليته.",
+example:"اشترى تلميذ 3 كراريس ثمن الواحد 2 دنانير. الثمن الجملي هو 3 × 2.",
+exercise:"اشترت مدرسة 8 علب، في كل علبة 12 قلمًا. كم قلمًا اشترت؟",
+correction:"8 × 12 = 96 قلمًا."
+}
+],
+"العربية":[
+{
+title:"فهم النص",
+explanation:"نقرأ النص قراءة متأنّية، ونحدّد موضوعه والشخصيات والأحداث والمكان والزمان. ثمّ نجيب عن الأسئلة اعتمادًا على النصّ.",
+example:"إذا كان النصّ يحكي عن تلميذ ساعد زميله، فقد يكون موضوعه التعاون.",
+exercise:"اقرأ نصًّا من كتابك وحدّد شخصيتين وحدثًا رئيسيًا.",
+correction:"تختلف الإجابة حسب النصّ المختار؛ يجب أن تكون مستندة إلى ما ورد فيه."
+},
+{
+title:"الفعل والفاعل",
+explanation:"الفعل يدلّ على حدث، والفاعل هو من قام بالفعل أو أُسنِد إليه. نبحث عن الفعل ثمّ نسأل: من قام به؟",
+example:"كتب التلميذ الدرس. الفعل: كتب. الفاعل: التلميذ.",
+exercise:"عيّن الفعل والفاعل في: زرع الفلاح الأشجار.",
+correction:"الفعل: زرع. الفاعل: الفلاح."
+},
+{
+title:"التعبير الكتابي",
+explanation:"قبل الكتابة نحدّد الموضوع والأفكار الأساسية، ونرتّبها، ثمّ نكتب مقدّمة وعرضًا وخاتمة مناسبة. نراجع النصّ للتثبّت من سلامة اللغة وعلامات الترقيم.",
+example:"موضوع: المحافظة على نظافة المدرسة. الأفكار: رمي الفضلات في السلة، المحافظة على القسم، المشاركة في التنظيف.",
+exercise:"اكتب فقرة من 5 إلى 7 جمل حول المحافظة على البيئة.",
+correction:"تُراجع الفقرة حسب ارتباطها بالموضوع، وترتيب الأفكار، وسلامة الجمل والإملاء."
+}
 ],
 "الفرنسية":[
-["Compréhension","Lis le texte, identifie les personnages et réponds aux questions."],
-["Grammaire","Révise le nom, le verbe, le sujet et la construction de phrases."]
-],
-"الرياضيات":[
-["العمليات الحسابية","تدرّب على الجمع والطرح والضرب والقسمة، وتثبّت من النتيجة."],
-["حل المسائل","اقرأ المسألة، استخرج المعطيات، حدّد المطلوب، ثم اكتب الحلّ مع الوحدة."]
-],
-"الإيقاظ العلمي":[
-["الملاحظة والتجربة","سجّل الملاحظات، اقترح تفسيرًا، ثم قارن النتيجة بما تتوقّعه."],
-["البيئة والكائنات الحية","راجع حاجات الكائنات الحية وعلاقاتها بمحيطها بالاعتماد على دروسك."]
-],
-"التربية الإسلامية":[
-["القيم والسلوك","راجع الدرس واحرص على فهم القيم والأمثلة الواردة فيه."]
-],
-"التربية المدنية":[
-["الحقوق والواجبات","تعرّف على حقوق الطفل وواجباته وقواعد العيش المشترك."]
-],
-"التاريخ":[
-["ترتيب الأحداث","استعمل خطًا زمنيًا لترتيب الأحداث والشخصيات التي درستها."]
-],
-"الجغرافيا":[
-["قراءة الخريطة","تدرّب على قراءة العنوان والمفتاح والاتجاهات وتحديد المواقع."]
+{
+title:"Compréhension d’un texte",
+explanation:"Lis le texte attentivement. Repère le sujet, les personnages, le lieu et les informations importantes avant de répondre.",
+example:"Question : Où habite Sami ? Cherche la réponse dans le texte.",
+exercise:"Lis un texte de ton manuel et relève le nom du personnage principal.",
+correction:"La réponse dépend du texte choisi."
+},
+{
+title:"La phrase simple",
+explanation:"Une phrase commence par une majuscule et se termine généralement par un point, un point d’interrogation ou un point d’exclamation.",
+example:"L’enfant joue dans le jardin.",
+exercise:"Réécris correctement : demain nous allons à l’école",
+correction:"Demain, nous allons à l’école."
+}
 ],
 "الإنجليزية":[
-["Vocabulary","Learn the words from your lessons and use them in simple sentences."]
-]
-};
-let selected="الرياضيات";
-function render(){
-const year=document.getElementById("year").value;
-const q=document.getElementById("search").value.trim().toLowerCase();
-document.getElementById("subjects").innerHTML=subjects
-.filter(s=>s[0].toLowerCase().includes(q))
-.map(s=>`<button class="subject" onclick="choose('${s[0]}')">${s[1]}<br>${s[0]}</button>`).join("");
-const all=subjects.flatMap(s=>(samples[s[0]]||[]).map(l=>({subject:s[0],lesson:l[0],desc:l[1]})));
-const shown=all.filter(x=>(x.subject===selected||q)&&
-(!q||(x.subject+" "+x.lesson+" "+x.desc).toLowerCase().includes(q)));
-document.getElementById("heading").textContent="📝 "+selected+" — السنة "+year;
-document.getElementById("lessons").innerHTML=shown.length?shown.map(x=>
-`<article class="lesson"><h3>${x.lesson}</h3><p>${x.desc}</p><p class="small">محتوى تمهيدي للمراجعة؛ راجع كتابك المدرسي للتفاصيل الرسمية.</p></article>`
-).join(""):"<p>ما فماش نتيجة مطابقة. اختار مادة أخرى أو جرّب كلمة بحث مختلفة.</p>";
+{
+title:"Introducing yourself",
+explanation:"We can introduce ourselves by giving our name, age, and other simple information.",
+example:"My name is Ali. I am eleven years old.",
+exercise:"Complete: My name is ____.",
+correction:"Write your own name in the blank."
 }
-function choose(name){selected=name;document.getElementById("search").value="";render();document.getElementById("heading").scrollIntoView({behavior:"smooth"});}
-function answer(n){document.getElementById("result").textContent=n===100?"أحسنت! إجابة صحيحة 🎉":"حاول مرة أخرى. احسب 25 × 4 من جديد.";}
+],
+"الإيقاظ العلمي":[
+{
+title:"الملاحظة والاستنتاج",
+explanation:"نلاحظ الظاهرة، ونسجّل ما نراه، ثمّ نقترح تفسيرًا ونختبره بالتجربة عندما يكون ذلك ممكنًا وآمنًا.",
+example:"نلاحظ أنّ بعض الأجسام تطفو على الماء وأجسامًا أخرى تغوص.",
+exercise:"اقترح تجربة بسيطة لمقارنة طفو جسمين آمنين في الماء.",
+correction:"نضع الجسمين بحذر في الماء ونلاحظ النتيجة. يتعلّق الاستنتاج بالأجسام المختارة ونتيجة التجربة."
+}
+],
+"التربية الإسلامية":[
+{
+title:"القيم والسلوك",
+explanation:"نتعلّم من الدروس الدينية القيم التي تساعد على حسن المعاملة، مثل الصدق والأمانة والتعاون، ونطبّقها في حياتنا اليومية.",
+example:"إرجاع شيء وجدناه إلى صاحبه مثال على الأمانة.",
+exercise:"اذكر تصرّفًا يدلّ على الصدق في المدرسة.",
+correction:"مثال: قول الحقيقة واحترام حقوق الآخرين."
+}
+],
+"التربية المدنية":[
+{
+title:"الحقوق والواجبات",
+explanation:"للطفل حقوق مثل التعلّم والحماية، وعليه واجبات مثل احترام الآخرين والمحافظة على ممتلكات المدرسة.",
+example:"المحافظة على الكتب المدرسية من الواجبات.",
+exercise:"اذكر حقًّا وواجبًا للتلميذ.",
+correction:"مثال الحقّ: التعلّم. مثال الواجب: احترام زملائه."
+}
+],
+"التاريخ":[
+{
+title:"ترتيب الأحداث",
+explanation:"نرتّب الأحداث التاريخية حسب زمن وقوعها باستعمال التواريخ أو خطّ زمني، ونميّز بين الأحداث السابقة واللاحقة.",
+example:"إذا وقع حدث سنة 1900 وآخر سنة 1950، فالحدث الأول أسبق.",
+exercise:"أيّهما أسبق: حدث سنة 1910 أم حدث سنة 1920؟",
+correction:"حدث سنة 1910 أسبق."
+}
+],
+"الجغرافيا":[
+{
+title:"قراءة الخريطة",
+explanation:"نبدأ بقراءة عنوان الخريطة ومفتاحها واتجاهاتها، ثمّ نحدّد المواقع والرموز حسب المعلومات التي تعرضها.",
+example:"يساعد مفتاح الخريطة على فهم معنى الألوان والرموز.",
+exercise:"اختر خريطة من كتابك وحدّد عنوانها ومفتاحها.",
+correction:"تختلف الإجابة حسب الخريطة المختارة."
+}
+]
+}
+};
+
+let selected = "الرياضيات";
+
+function render(){
+  const year = document.getElementById("year").value;
+  const q = document.getElementById("search").value.trim().toLowerCase();
+  const subjectArea = document.getElementById("subjects");
+  const lessonArea = document.getElementById("lessons");
+
+  const availableSubjects = subjects.filter(s => {
+    const name = s[0];
+    const hasLessons = (lessonData[year] || {})[name];
+    return !q || name.toLowerCase().includes(q) ||
+      (hasLessons || []).some(l =>
+        (l.title + " " + l.explanation).toLowerCase().includes(q)
+      );
+  });
+
+  subjectArea.innerHTML = availableSubjects.map(s =>
+    `<button class="subject ${selected===s[0]?'active':''}"
+      onclick="choose('${s[0]}')">${s[1]}<br>${s[0]}</button>`
+  ).join("");
+
+  document.getElementById("heading").textContent =
+    "📝 " + selected + " — السنة " + year;
+
+  let lessons = ((lessonData[year] || {})[selected] || []);
+
+  if(q){
+    lessons = lessons.filter(l =>
+      (l.title + " " + l.explanation + " " +
+       (l.exercise || "")).toLowerCase().includes(q)
+    );
+  }
+
+  if(!lessons.length){
+    lessonArea.innerHTML =
+      "<p>ما زال محتوى هذه المادة أو الدرس غير مدرج هنا. " +
+      "باش نزيدوه بعد التثبّت من برنامج السنة المعنية.</p>";
+    return;
+  }
+
+  lessonArea.innerHTML = lessons.map((l,i) => `
+    <article class="lesson">
+      <span class="badge">الدرس ${i+1}</span>
+      <h3>${l.title}</h3>
+
+      <h4>📘 شرح الدرس</h4>
+      <p>${l.explanation}</p>
+
+      ${l.example ? `
+        <h4>✏️ مثال</h4>
+        <p>${l.example}</p>` : ""}
+
+      ${l.exercise ? `
+        <h4>📝 تمرين</h4>
+        <p>${l.exercise}</p>` : ""}
+
+      ${l.correction ? `
+        <details>
+          <summary>✅ إظهار الإصلاح</summary>
+          <div class="answer">${l.correction}</div>
+        </details>` : ""}
+    </article>
+  `).join("");
+}
+
+function choose(name){
+  selected = name;
+  document.getElementById("search").value = "";
+  render();
+  document.getElementById("heading").scrollIntoView({
+    behavior:"smooth"
+  });
+}
+
+function answer(n){
+  document.getElementById("result").textContent =
+    n===100 ? "أحسنت! إجابة صحيحة 🎉" :
+    "حاول مرة أخرى. احسب 25 × 4 من جديد.";
+}
+
 render();
+
 </script>
 </body>
-</html>
-
+  </html>
